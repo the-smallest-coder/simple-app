@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  php:
+    build: images/php
+    container_name: php_container
+    ports:
+      - "80:80"
+    env_file:
+      - ./.env
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: mysql
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_HOST: mongo
+    volumes:
+      - ./app:/var/www/html/
+    networks:
+      - myapp_network
+    depends_on:
+      - mysql
+      - mongo
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql_container
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - myapp_network
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo_container
+    volumes:
+      - ./data/mongo:/data/db
+    networks:
+      - myapp_network
+
+networks:
+  myapp_network:
+    driver: bridge
