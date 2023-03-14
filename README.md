@@ -7,6 +7,8 @@ This a simple example on how to use docker compose to run a simple web applicati
 
 ## How to run
 - git clone with project url
+- if you want XDebug enabled, you should add `XDEBUG_ENABLED=1` to your `.env` file
+- please copy .env.exmpale to .env and fill the values
 - compose up
 - wait untile the containers are up and running(MySQL and MongoDB can take time for provision)
 

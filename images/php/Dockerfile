@@ -1,7 +1,10 @@
 FROM php:7.0.33-apache-jessie
 
-RUN pecl install xdebug-2.7.0 && \
+ARG XDEBUG_ENABLE=false
+RUN if [ "$XDEBUG_ENABLE" = "true" ]; then \
+    pecl install xdebug-2.7.0 && \
     docker-php-ext-enable xdebug
+
 RUN apt-get update && \
     apt-get install -y libcurl4-openssl-dev pkg-config libssl-dev && \
     apt-get clean && \
